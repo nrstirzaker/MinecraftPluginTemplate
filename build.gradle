@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+}
+
+group 'com.foundrysoftware.minecraft'
+version '1.0-SNAPSHOT'
+
+
+
+def SERVER_LOC = 'C:\\Tools\\MCPythonTools\\server'
+def SERVER_PLUGIN_LOC = SERVER_LOC + '\\plugins'
+def FULL_JAR_NAME = rootProject.name + "-" + version+".jar"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
+
+
+task copyJar(type:Copy){
+
+    from "$buildDir/libs/" + FULL_JAR_NAME
+    into SERVER_PLUGIN_LOC
+
+}
+
+task copyConfig(type:Copy){
+
+    from "$buildDir/resources/main/" + "plugin.yml"
+    into SERVER_PLUGIN_LOC + "/" + rootProject.name
+
+}
+
+task runServer(type:Exec){
+    doFirst {
+        println "Starting server..."
+        workingDir = file(SERVER_LOC)
+        commandLine = ['cmd', '/C', 'start', 'start-1-16-1.bat']
+
+    }
+}
+
+task deploy() {
+
+    dependsOn build
+    dependsOn copyJar
+    dependsOn copyConfig
+
+    doLast {
+        println 'Copied " + FULL_JAR_NAME + " to: ' + SERVER_PLUGIN_LOC;
+    }
+}
+
+task deployAndRun() {
+
+    dependsOn deploy
+    dependsOn runServer
+
+    doLast {
+        println 'Deployed " + FULL_JAR_NAME + " to: ' + SERVER_PLUGIN_LOC;
+    }
+}
