@@ -1,8 +1,12 @@
 package com.foundrysoftware.minecraft.plugins;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.validation.constraints.NotNull;
@@ -31,6 +35,19 @@ public class PluginTemplate extends JavaPlugin {
                 me.sendMessage("Plugin Working");
                 return true;
             }
+        }
+        return false;
+    }
+    :Override
+    public boolean onInteract(PlayerInteractEvent e){
+        if(e.getItem()!=null && e.getItem().getItemMeta().getDisplayName().contains("score")) {
+            Location loc = e.getClickedBlock().getLocation();
+            loc.setY(loc.getY() + 1);
+            World world = loc.getWorld();
+            ArmorStand a = world.spawn(loc, ArmorStand.class);
+            a.setVisible(false);
+            a.addScoreboardTag("score");
+            return true;
         }
         return false;
     }
