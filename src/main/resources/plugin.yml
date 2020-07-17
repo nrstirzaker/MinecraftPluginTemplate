@@ -1,3 +1,7 @@
-main: com.foundrysoftware.minecraft.template
+main: com.foundrysoftware.minecraft.plugins.PluginTemplate
 name: PluginTemplate
 version: 1.0-SNAPSHOT
+
+commands:
+  simple:
+    description: Nothing yet
