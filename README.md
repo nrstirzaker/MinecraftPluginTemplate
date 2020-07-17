@@ -1,0 +1,1 @@
+A starting point for a Minecraft Plugin. Using Spigot and Gradle 
