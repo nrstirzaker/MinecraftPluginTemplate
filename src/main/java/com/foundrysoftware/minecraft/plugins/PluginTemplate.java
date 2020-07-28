@@ -38,7 +38,7 @@ public class PluginTemplate extends JavaPlugin {
         }
         return false;
     }
-    :Override
+    @Override
     public boolean onInteract(PlayerInteractEvent e){
         if(e.getItem()!=null && e.getItem().getItemMeta().getDisplayName().contains("score")) {
             Location loc = e.getClickedBlock().getLocation();
