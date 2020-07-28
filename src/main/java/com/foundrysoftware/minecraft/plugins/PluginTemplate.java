@@ -48,7 +48,7 @@ public class PluginTemplate extends JavaPlugin {
             a.setVisible(false);
             a.addScoreboardTag("score");
             return true;
-        }
+         }
         return false;
     }
 }
