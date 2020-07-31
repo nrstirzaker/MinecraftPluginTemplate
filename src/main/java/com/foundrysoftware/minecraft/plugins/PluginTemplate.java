@@ -5,9 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -46,8 +44,8 @@ public class PluginTemplate extends JavaPlugin {
     @Override
     public boolean onShoot(ProjectileHitEvent e){
        if(e.getEntity() instanceof Arrow) {
-           Arrow a = (Arrow) e.getEntity();
-
+           Arrow arrow = (Arrow) e.getEntity();
+           Entity shooter = (Entity) arrow.getShooter();
            Location loc;
            if (e.getHitBlock() != null) {
                loc = e.getHitBlock().getLocation();
@@ -55,10 +53,17 @@ public class PluginTemplate extends JavaPlugin {
                loc = e.getHitEntity().getLocation();
            }
            Bukkit.getServer().broadcastMessage(loc.toString());
-           if (a.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
-               loc.getWorld().createExplosion(loc,10,True);
+           if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
+               loc.getWorld().createExplosion(loc,10);
+           }
+           if(arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)){
+               for(Entity ent: loc.getWorld().getNearbyEntities(loc,5,5,5)){
+                   if(ent instanceof LivingEntity){
+                       (Damageable)((LivingEntity) ent).damage(50, shooter);
+                   }
+               }
            }
            return true;
-       }
+       }return false;
     }
 }
