@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -44,6 +45,8 @@ public class PluginTemplate extends JavaPlugin {
     @Override
     public boolean onShoot(ProjectileHitEvent e){
        if(e.getEntity() instanceof Arrow) {
+           Arrow a = (Arrow) e.getEntity();
+
            Location loc;
            if (e.getHitBlock() != null) {
                loc = e.getHitBlock().getLocation();
