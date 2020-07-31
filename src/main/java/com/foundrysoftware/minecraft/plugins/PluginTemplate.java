@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.validation.constraints.NotNull;
 
@@ -54,6 +55,9 @@ public class PluginTemplate extends JavaPlugin {
                loc = e.getHitEntity().getLocation();
            }
            Bukkit.getServer().broadcastMessage(loc.toString());
+           if (a.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
+               loc.getWorld().createExplosion(loc,10,True);
+           }
            return true;
        }
     }
