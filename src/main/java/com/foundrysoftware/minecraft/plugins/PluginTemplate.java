@@ -43,13 +43,15 @@ public class PluginTemplate extends JavaPlugin {
     }
     @Override
     public boolean onShoot(ProjectileHitEvent e){
-        Location loc;
-        if(e.getHitBlock()!=null){
-            loc = e.getHitBlock().getLocation();
-        }else{
-            loc = e.getHitEntity().getLocation();
-        }
-        Bukkit.getServer().broadcastMessage(loc.toString());
-        return true;
+       if(e.getEntity() instanceof Arrow) {
+           Location loc;
+           if (e.getHitBlock() != null) {
+               loc = e.getHitBlock().getLocation();
+           } else {
+               loc = e.getHitEntity().getLocation();
+           }
+           Bukkit.getServer().broadcastMessage(loc.toString());
+           return true;
+       }
     }
 }
