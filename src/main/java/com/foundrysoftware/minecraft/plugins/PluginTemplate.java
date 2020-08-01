@@ -92,6 +92,7 @@ public class PluginTemplate extends JavaPlugin {
                                     item.setAmount(item.getAmount());
                                     PotionMeta im = (PotionMeta)item.getItemMeta();
                                     im.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(args[0]))));
+                                    im.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),10,10),true);
                                     item.setItemMeta(im);
                     }
 
