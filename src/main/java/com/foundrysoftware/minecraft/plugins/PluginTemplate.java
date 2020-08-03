@@ -69,10 +69,13 @@ public class PluginTemplate extends JavaPlugin {
                             if(isArrow(item)==true){
                                 item.setType(Material.TIPPED_ARROW);
                                 item.setAmount(item.getAmount());
-                                PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
-                                potionmeta.setBasePotionData(new PotionData(PotionType.JUMP));
-                                potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,10,10),true);
-                                item.setItemMeta(potionmeta);
+                                PotionMeta potionMeta = (PotionMeta)item.getItemMeta();
+                                potionMeta.setBasePotionData(new PotionData(PotionType.JUMP));
+                                int duration =10;
+                                int amplifier =10;
+                                boolean Visible=true;
+                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,duration,amplifier),Visible);
+                                item.setItemMeta(potionMeta);
 
                             }
                             }
@@ -90,10 +93,13 @@ public class PluginTemplate extends JavaPlugin {
                                 if(isArrow(item)==true){
                                     item.setType(Material.TIPPED_ARROW);
                                     item.setAmount(item.getAmount());
-                                    PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
-                                    potionmeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(args[0]))));
-                                    potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),10,10),true);
-                                    item.setItemMeta(potionmeta);
+                                    PotionMeta potionMeta = (PotionMeta)item.getItemMeta();
+                                    potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(args[0]))));
+                                    int duration =10;
+                                    int amplifier =2;
+                                    boolean Visible=true;
+                                    potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),duration,amplifier),Visible);
+                                    item.setItemMeta(potionMeta);
                     }
 
                 }
@@ -133,6 +139,14 @@ public class PluginTemplate extends JavaPlugin {
             return false;
         }
 
+       }
+       public boolean boom(Location loc,int area,int damage,Entity shooter){
+        for(Entity ent: loc.getWorld().getNearbyEntities(loc,area,area,area)){
+            if(ent instanceof LivingEntity){
+                ((LivingEntity) ent).damage(damage,shooter);
+
+            }
+        }return true;
        }
     }
 
