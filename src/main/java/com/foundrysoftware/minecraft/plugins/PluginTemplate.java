@@ -66,7 +66,7 @@ public class PluginTemplate extends JavaPlugin {
                                         if(item == null){
                                             continue;
                                         }
-                            if(item.getType().toString().contains("ARROW")){
+                            if(isArrow(item)==true){
                                 item.setType(Material.TIPPED_ARROW);
                                 item.setAmount(item.getAmount());
                                 PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
@@ -87,12 +87,12 @@ public class PluginTemplate extends JavaPlugin {
                                 if(item == null){
                                     continue;
                                 }
-                                if(item.getType().toString().contains("ARROW")){
+                                if(isArrow(item)==true){
                                     item.setType(Material.TIPPED_ARROW);
                                     item.setAmount(item.getAmount());
                                     PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
                                     potionmeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(args[0]))));
-                                    potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),10,10),true);//duration,amplifire,Show particles
+                                    potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),10,10),true);
                                     item.setItemMeta(potionmeta);
                     }
 
@@ -125,6 +125,14 @@ public class PluginTemplate extends JavaPlugin {
            return true;
            }
            return false;
+       }
+       public boolean isArrow(ItemStack item){
+        if(item.getType()== Material.TIPPED_ARROW|| item.getType() == Material.ARROW || item.getType()==Material.SPECTRAL_ARROW){
+            return true;
+        }else{
+            return false;
+        }
+
        }
     }
 
