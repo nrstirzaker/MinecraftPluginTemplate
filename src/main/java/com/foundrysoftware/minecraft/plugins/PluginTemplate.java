@@ -56,23 +56,23 @@ public class PluginTemplate extends JavaPlugin {
                 me.sendMessage("Plugin Working");
                 return true;
             }
-                if (label.equalsIgnoreCase("hawkeye")){
-                    if(args[0].equalsIgnoreCase("tnt")){
+                if (label.equalsIgnoreCase("hawkeye")){//check command label
+                    if(args[0].equalsIgnoreCase("tnt")){//check if the second word is tnt
                         if(sender instanceof Player){
                             Player me =(Player)sender;
-                            PlayerInventory inv = me.getInventory();
-                            for(int i = 0; i<inv.getSize(); i++){
-                                ItemStack item = inv.getItem(i);
+                            PlayerInventory inventory = me.getInventory();
+                            for(int i = 0; i<inventory.getSize(); i++){
+                                ItemStack item = inventory.getItem(i);
                                         if(item == null){
                                             continue;
                                         }
                             if(item.getType()== Material.TIPPED_ARROW|| item.getType() == Material.ARROW || item.getType()==Material.SPECTRAL_ARROW){
                                 item.setType(Material.TIPPED_ARROW);
                                 item.setAmount(item.getAmount());
-                                PotionMeta im = (PotionMeta)item.getItemMeta();
-                                im.setBasePotionData(new PotionData(PotionType.JUMP));
-                                im.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,10,10),true);
-                                item.setItemMeta(im);
+                                PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
+                                potionmeta.setBasePotionData(new PotionData(PotionType.JUMP));
+                                potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,10,10),true);
+                                item.setItemMeta(potionmeta);
 
                             }
                             }
@@ -81,19 +81,19 @@ public class PluginTemplate extends JavaPlugin {
                     }else{
                         if(sender instanceof Player){
                             Player me =(Player)sender;
-                            PlayerInventory inv = me.getInventory();
-                            for(int i = 0; i<inv.getSize(); i++){
-                                ItemStack item = inv.getItem(i);
+                            PlayerInventory inventory = me.getInventory();
+                            for(int i = 0; i<inventory.getSize(); i++){
+                                ItemStack item = inventory.getItem(i);
                                 if(item == null){
                                     continue;
                                 }
                                 if(item.getType()== Material.TIPPED_ARROW|| item.getType() == Material.ARROW || item.getType()==Material.SPECTRAL_ARROW){
                                     item.setType(Material.TIPPED_ARROW);
                                     item.setAmount(item.getAmount());
-                                    PotionMeta im = (PotionMeta)item.getItemMeta();
-                                    im.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(args[0]))));
-                                    im.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),10,10),true);
-                                    item.setItemMeta(im);
+                                    PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
+                                    potionmeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(args[0]))));
+                                    potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),10,10),true);
+                                    item.setItemMeta(potionmeta);
                     }
 
                 }
@@ -101,7 +101,7 @@ public class PluginTemplate extends JavaPlugin {
         }}}
         return false;
     }
-    @Override
+    //@Override
     public boolean onShoot(ProjectileHitEvent e){
        if(e.getEntity() instanceof Arrow) {
            Arrow arrow = (Arrow) e.getEntity();
@@ -114,7 +114,7 @@ public class PluginTemplate extends JavaPlugin {
            }
            Bukkit.getServer().broadcastMessage(loc.toString());
            if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
-               loc.getWorld().createExplosion(loc,10,false,false,shooter);
+               loc.getWorld().createExplosion(loc,10,false,false,shooter);//location of explosion,size,setFire,DoBlockDamage,ExplosionOwner
            }
            //if(arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)){
               // for(Entity ent: loc.getWorld().getNearbyEntities(loc,5,5,5)){
@@ -127,4 +127,4 @@ public class PluginTemplate extends JavaPlugin {
            return false;
        }
     }
-}
+
