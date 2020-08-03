@@ -66,7 +66,7 @@ public class PluginTemplate extends JavaPlugin {
                                         if(item == null){
                                             continue;
                                         }
-                            if(item.getType()== Material.TIPPED_ARROW|| item.getType() == Material.ARROW || item.getType()==Material.SPECTRAL_ARROW){
+                            if(item.getType().toString().contains("ARROW")){
                                 item.setType(Material.TIPPED_ARROW);
                                 item.setAmount(item.getAmount());
                                 PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
@@ -87,7 +87,7 @@ public class PluginTemplate extends JavaPlugin {
                                 if(item == null){
                                     continue;
                                 }
-                                if(item.getType()== Material.TIPPED_ARROW|| item.getType() == Material.ARROW || item.getType()==Material.SPECTRAL_ARROW){
+                                if(item.getType().toString().contains("ARROW")){
                                     item.setType(Material.TIPPED_ARROW);
                                     item.setAmount(item.getAmount());
                                     PotionMeta potionmeta = (PotionMeta)item.getItemMeta();
