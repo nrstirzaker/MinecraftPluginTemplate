@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -108,6 +109,7 @@ public class PluginTemplate extends JavaPlugin {
         return false;
     }
     //@Override
+    @EventHandler
     public boolean onShoot(ProjectileHitEvent e){
        if(e.getEntity() instanceof Arrow) {
            Arrow arrow = (Arrow) e.getEntity();
