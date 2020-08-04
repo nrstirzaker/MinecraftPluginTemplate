@@ -143,10 +143,10 @@ public class PluginTemplate extends JavaPlugin {
         }
 
        }
-       public boolean boom(Location loc,int area,int damage,Entity shooter){
-        for(Entity ent: loc.getWorld().getNearbyEntities(loc,area,area,area)){
-            if(ent instanceof LivingEntity){
-                ((LivingEntity) ent).damage(damage,shooter);
+       public boolean areadamage(Location loc,int area,int damage,Entity shooter){
+        for(Entity entity: loc.getWorld().getNearbyEntities(loc,area,area,area)){
+            if(entity instanceof LivingEntity){
+                ((LivingEntity) entity).damage(damage,shooter);
 
             }
         }return true;
