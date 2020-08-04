@@ -77,7 +77,6 @@ public class PluginTemplate extends JavaPlugin {
                                 boolean visible=true;
                                 potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,duration,amplifier),visible);
                                 item.setItemMeta(potionMeta);
-
                             }
                             }
 
