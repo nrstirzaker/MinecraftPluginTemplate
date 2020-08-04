@@ -74,8 +74,8 @@ public class PluginTemplate extends JavaPlugin {
                                 potionMeta.setBasePotionData(new PotionData(PotionType.JUMP));
                                 int duration =10;
                                 int amplifier =10;
-                                boolean Visible=true;
-                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,duration,amplifier),Visible);
+                                boolean visible=true;
+                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,duration,amplifier),visible);
                                 item.setItemMeta(potionMeta);
 
                             }
@@ -92,14 +92,15 @@ public class PluginTemplate extends JavaPlugin {
                                     continue;
                                 }
                                 if(isArrow(item)==true){
+                                    String potion = args[0];
                                     item.setType(Material.TIPPED_ARROW);
                                     item.setAmount(item.getAmount());
                                     PotionMeta potionMeta = (PotionMeta)item.getItemMeta();
-                                    potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(args[0]))));
+                                    potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
                                     int duration =10;
                                     int amplifier =2;
-                                    boolean Visible=true;
-                                    potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(args[0]),duration,amplifier),Visible);
+                                    boolean visible=true;
+                                    potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion),duration,amplifier),visible);
                                     item.setItemMeta(potionMeta);
                     }
 
