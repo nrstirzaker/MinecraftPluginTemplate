@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class PluginTemplate extends JavaPlugin {
-
+    private static final String ARROW_TYPE_TNT = "tnt";
     private final String PLUGIN_NAME = "PluginTemplate";
 
     public void onEnable(){
@@ -58,7 +58,7 @@ public class PluginTemplate extends JavaPlugin {
                 return true;
             }
                 if (label.equalsIgnoreCase("hawkeye")){//check command label
-                    if(args[0].equalsIgnoreCase("tnt")){//check if the second word is tnt
+                    if(args[0].equalsIgnoreCase(ARROW_TYPE_TNT)){//check if the second word is tnt
                         if(sender instanceof Player){
                             Player me =(Player)sender;
                             PlayerInventory inventory = me.getInventory();
