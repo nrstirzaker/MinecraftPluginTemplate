@@ -37,118 +37,137 @@ public class PluginTemplate extends JavaPlugin {
     private static final String ARROW_TYPE_TNT = "tnt";
     private final String PLUGIN_NAME = "PluginTemplate";
 
-    public void onEnable(){
-        getLogger().info("["+ PLUGIN_NAME +"] Started ");
+    public void onEnable() {
+        getLogger().info("[" + PLUGIN_NAME + "] Started ");
     }
 
-    public void onReload(){
-        getLogger().info("["+ PLUGIN_NAME +"] Server Reload");
+    public void onReload() {
+        getLogger().info("[" + PLUGIN_NAME + "] Server Reload");
     }
 
-    public void onDisable(){
-        getLogger().info("["+ PLUGIN_NAME +"] Server Stopping");
+    public void onDisable() {
+        getLogger().info("[" + PLUGIN_NAME + "] Server Stopping");
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (label.equalsIgnoreCase("simple")){
+        if (label.equalsIgnoreCase("simple")) {
             if (sender instanceof Player) {
                 Player me = (Player) sender;
                 me.sendMessage("Plugin Working");
                 return true;
             }
-                if (label.equalsIgnoreCase("hawkeye")){//check command label
-                    if(args[0].equalsIgnoreCase(ARROW_TYPE_TNT)){//check if the second word is tnt
-                        if(sender instanceof Player){
-                            Player me =(Player)sender;
-                            PlayerInventory inventory = me.getInventory();
-                            for(int i = 0; i<inventory.getSize(); i++){
-                                ItemStack item = inventory.getItem(i);
-                                        if(item == null){
-                                            continue;
-                                        }
-                            if(isArrow(item)==true){
+            if (label.equalsIgnoreCase("hawkeye")) {//check command label
+                if (args[0].equalsIgnoreCase(ARROW_TYPE_TNT)) {//check if the second word is tnt
+                    if (sender instanceof Player) {
+                        Player me = (Player) sender;
+                        PlayerInventory inventory = me.getInventory();
+                        for (int i = 0; i < inventory.getSize(); i++) {
+                            ItemStack item = inventory.getItem(i);
+                            if (item == null) {
+                                continue;
+                            }
+                            if (isArrow(item) == true) {
                                 item.setType(Material.TIPPED_ARROW);
                                 item.setAmount(item.getAmount());
-                                PotionMeta potionMeta = (PotionMeta)item.getItemMeta();
+                                PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
                                 potionMeta.setBasePotionData(new PotionData(PotionType.JUMP));
-                                int duration =10;
-                                int amplifier =10;
-                                boolean visible=true;
-                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER,duration,amplifier),visible);
+                                int duration = 10;
+                                int amplifier = 10;
+                                boolean visible = true;
+                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, duration, amplifier), visible);
                                 item.setItemMeta(potionMeta);
                             }
+                        }
+
+                    }
+                } else {
+                    if (sender instanceof Player) {
+                        Player me = (Player) sender;
+                        PlayerInventory inventory = me.getInventory();
+                        for (int i = 0; i < inventory.getSize(); i++) {
+                            ItemStack item = inventory.getItem(i);
+                            if (item == null) {
+                                continue;
+                            }
+                            if (isArrow(item) == true) {
+                                String potion = args[0];
+                                item.setType(Material.TIPPED_ARROW);
+                                item.setAmount(item.getAmount());
+                                PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+                                potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
+                                int duration = 10;
+                                int amplifier = 2;
+                                boolean visible = true;
+                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
+                                item.setItemMeta(potionMeta);
                             }
 
                         }
-                    }else{
-                        if(sender instanceof Player){
-                            Player me =(Player)sender;
-                            PlayerInventory inventory = me.getInventory();
-                            for(int i = 0; i<inventory.getSize(); i++){
-                                ItemStack item = inventory.getItem(i);
-                                if(item == null){
-                                    continue;
-                                }
-                                if(isArrow(item)==true){
-                                    String potion = args[0];
-                                    item.setType(Material.TIPPED_ARROW);
-                                    item.setAmount(item.getAmount());
-                                    PotionMeta potionMeta = (PotionMeta)item.getItemMeta();
-                                    potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
-                                    int duration =10;
-                                    int amplifier =2;
-                                    boolean visible=true;
-                                    potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion),duration,amplifier),visible);
-                                    item.setItemMeta(potionMeta);
                     }
-
                 }
             }
-        }}}
+        }
         return false;
     }
+
     //@Override
     @EventHandler
-    public boolean onShoot(ProjectileHitEvent e){
-       if(e.getEntity() instanceof Arrow) {
-           Arrow arrow = (Arrow) e.getEntity();
-           Entity shooter = (Entity) arrow.getShooter();
-           Location loc;
-           if (e.getHitBlock() != null) {
-               loc = e.getHitBlock().getLocation();
-           } else {
-               loc = e.getHitEntity().getLocation();
-           }
-           Bukkit.getServer().broadcastMessage(loc.toString());
-           if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
-               loc.getWorld().createExplosion(loc,10,false,false,shooter);//location of explosion,size,setFire,DoBlockDamage,ExplosionOwner
-           }
-           //if(arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)){
-              // for(Entity ent: loc.getWorld().getNearbyEntities(loc,5,5,5)){
-                   //if(ent instanceof LivingEntity){
-                      // (Damageable)((LivingEntity) ent).damage(50, shooter);
-                   //}
-              // }
-           return true;
-           }
-           return false;
-       }
-       public boolean isArrow(ItemStack item){
-        if(item.getType()== Material.TIPPED_ARROW|| item.getType() == Material.ARROW || item.getType()==Material.SPECTRAL_ARROW){
+    public boolean onShoot(ProjectileHitEvent e) {
+        if (e.getEntity() instanceof Arrow) {
+            Arrow arrow = (Arrow) e.getEntity();
+            Entity shooter = (Entity) arrow.getShooter();
+            Location loc;
+            if (e.getHitBlock() != null) {
+                loc = e.getHitBlock().getLocation();
+            } else {
+                loc = e.getHitEntity().getLocation();
+            }
+            Bukkit.getServer().broadcastMessage(loc.toString());
+            if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
+                loc.getWorld().createExplosion(loc, 10, false, false, shooter);//location of explosion,size,setFire,DoBlockDamage,ExplosionOwner
+            }
+            //if(arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)){
+            // for(Entity ent: loc.getWorld().getNearbyEntities(loc,5,5,5)){
+            //if(ent instanceof LivingEntity){
+            // (Damageable)((LivingEntity) ent).damage(50, shooter);
+            //}
+            // }
             return true;
-        }else{
+        }
+        return false;
+    }
+
+    public boolean isArrow(ItemStack item) {
+        if (item.getType() == Material.TIPPED_ARROW || item.getType() == Material.ARROW || item.getType() == Material.SPECTRAL_ARROW) {
+            return true;
+        } else {
             return false;
         }
 
-       }
-       private boolean areadamage(Location loc,int area,int damage,Entity shooter){
-        for(Entity entity: loc.getWorld().getNearbyEntities(loc,area,area,area)){
-            if(entity instanceof LivingEntity){
-                ((LivingEntity) entity).damage(damage,shooter);
+    }
+
+    private boolean areadamage(Location loc, int area, int damage, Entity shooter) {
+        for (Entity entity : loc.getWorld().getNearbyEntities(loc, area, area, area)) {
+            if (entity instanceof LivingEntity) {
+                ((LivingEntity) entity).damage(damage, shooter);
 
             }
-        }return true;
-       }
+        }
+        return true;
     }
+
+    private Location getLocation(ProjectileHitEvent event) {
+        if (event.getEntity() instanceof Arrow) {
+            Arrow arrow = (Arrow) event.getEntity();
+            Entity shooter = (Entity) arrow.getShooter();
+            Location loc;
+            if (event.getHitBlock() != null) {
+                loc = event.getHitBlock().getLocation();
+            } else {
+                loc = event.getHitEntity().getLocation();
+            }return loc;
+        }return event.getEntity().getLocation();
+    }
+}
 
