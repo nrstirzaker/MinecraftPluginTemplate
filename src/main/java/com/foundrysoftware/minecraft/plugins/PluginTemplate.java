@@ -117,12 +117,7 @@ public class PluginTemplate extends JavaPlugin {
         if (e.getEntity() instanceof Arrow) {
             Arrow arrow = (Arrow) e.getEntity();
             Entity shooter = (Entity) arrow.getShooter();
-            Location loc;
-            if (e.getHitBlock() != null) {
-                loc = e.getHitBlock().getLocation();
-            } else {
-                loc = e.getHitEntity().getLocation();
-            }
+            Location loc=getLocation(e);
             Bukkit.getServer().broadcastMessage(loc.toString());
             if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
                 loc.getWorld().createExplosion(loc, 10, false, false, shooter);//location of explosion,size,setFire,DoBlockDamage,ExplosionOwner
@@ -158,7 +153,7 @@ public class PluginTemplate extends JavaPlugin {
     }
 
     private Location getLocation(ProjectileHitEvent event) {
-        if (event.getEntity() instanceof Arrow) {
+
             Arrow arrow = (Arrow) event.getEntity();
             Entity shooter = (Entity) arrow.getShooter();
             Location loc;
@@ -166,8 +161,8 @@ public class PluginTemplate extends JavaPlugin {
                 loc = event.getHitBlock().getLocation();
             } else {
                 loc = event.getHitEntity().getLocation();
-            }return loc;
-        }return event.getEntity().getLocation();
+
+        }return loc;
     }
 }
 
