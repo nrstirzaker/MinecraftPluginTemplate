@@ -72,13 +72,10 @@ public class PluginTemplate extends JavaPlugin {
                             if (isArrow(item) == true) {
                                 item.setType(Material.TIPPED_ARROW);
                                 item.setAmount(item.getAmount());
-                                PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-                                potionMeta.setBasePotionData(new PotionData(PotionType.JUMP));
-                                int duration = 10;
-                                int amplifier = 10;
-                                boolean visible = true;
-                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, duration, amplifier), visible);
-                                item.setItemMeta(potionMeta);
+
+                                String potion = "CONDUIT_POWER";
+
+                                item.setItemMeta(createPotion(item,potion));
                             }
                         }
 
@@ -96,13 +93,8 @@ public class PluginTemplate extends JavaPlugin {
                                 String potion = args[0];
                                 item.setType(Material.TIPPED_ARROW);
                                 item.setAmount(item.getAmount());
-                                PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-                                potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
-                                int duration = 10;
-                                int amplifier = 2;
-                                boolean visible = true;
-                                potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
-                                item.setItemMeta(potionMeta);
+
+                                item.setItemMeta(createPotion(item,potion));
                             }
 
                         }
