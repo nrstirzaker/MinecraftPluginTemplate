@@ -167,7 +167,7 @@ public class PluginTemplate extends JavaPlugin {
         }
         return loc;
     }
-    public PotionMeta createPotion(Item item, String potion){
+    public PotionMeta createPotion(ItemStack item, String potion){
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
         potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
         int duration = 10;
@@ -175,6 +175,7 @@ public class PluginTemplate extends JavaPlugin {
         boolean visible = true;
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
         return(potionMeta);
+
     }
 }
 
