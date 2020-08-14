@@ -154,17 +154,27 @@ public class PluginTemplate extends JavaPlugin {
         return true;
     }
 
-    private Location getLocation(ProjectileHitEvent event) {
+    public Location getLocation(ProjectileHitEvent event) {
 
-            Arrow arrow = (Arrow) event.getEntity();
-            Entity shooter = (Entity) arrow.getShooter();
-            Location loc;
-            if (event.getHitBlock() != null) {
-                loc = event.getHitBlock().getLocation();
-            } else {
-                loc = event.getHitEntity().getLocation();
+        Arrow arrow = (Arrow) event.getEntity();
+        Entity shooter = (Entity) arrow.getShooter();
+        Location loc;
+        if (event.getHitBlock() != null) {
+            loc = event.getHitBlock().getLocation();
+        } else {
+            loc = event.getHitEntity().getLocation();
 
-        }return loc;
+        }
+        return loc;
+    }
+    public PotionMeta createPotion(Item item, String potion){
+        PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+        potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
+        int duration = 10;
+        int amplifier = 2;
+        boolean visible = true;
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
+        return(potionMeta);
     }
 }
 
