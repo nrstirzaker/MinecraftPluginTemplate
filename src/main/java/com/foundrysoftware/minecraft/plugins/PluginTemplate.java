@@ -51,10 +51,12 @@ public class PluginTemplate extends JavaPlugin {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (label.equalsIgnoreCase("simple")) {
+        String simple="simple";
+        if (label.equalsIgnoreCase(simple)) {
             if (sender instanceof Player) {
                 Player me = (Player) sender;
-                me.sendMessage("Plugin Working");
+                String message = "Plugin Working";
+                me.sendMessage(message);
                 return true;
             }
             if (label.equalsIgnoreCase("hawkeye")) {//check command label
@@ -142,7 +144,7 @@ public class PluginTemplate extends JavaPlugin {
 
     }
 
-    private boolean areadamage(Location loc, int area, int damage, Entity shooter) {
+    private boolean areaDamage(Location loc, int area, int damage, Entity shooter) {
         for (Entity entity : loc.getWorld().getNearbyEntities(loc, area, area, area)) {
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).damage(damage, shooter);
