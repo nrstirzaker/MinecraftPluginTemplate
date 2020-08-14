@@ -127,7 +127,7 @@ public class PluginTemplate extends JavaPlugin {
         return false;
     }
 
-    public boolean isArrow(ItemStack item) {
+    private boolean isArrow(ItemStack item) {
         if (item.getType() == Material.TIPPED_ARROW || item.getType() == Material.ARROW || item.getType() == Material.SPECTRAL_ARROW) {
             return true;
         } else {
@@ -146,7 +146,7 @@ public class PluginTemplate extends JavaPlugin {
         return true;
     }
 
-    public Location getLocation(ProjectileHitEvent event) {
+    private Location getLocation(ProjectileHitEvent event) {
 
         Arrow arrow = (Arrow) event.getEntity();
         Entity shooter = (Entity) arrow.getShooter();
@@ -159,7 +159,7 @@ public class PluginTemplate extends JavaPlugin {
         }
         return loc;
     }
-    public PotionMeta createPotion(ItemStack item, String potion){
+    private PotionMeta createPotion(ItemStack item, String potion){
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
         potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
         int duration = 10;
