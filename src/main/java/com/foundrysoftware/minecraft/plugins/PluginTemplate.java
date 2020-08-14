@@ -59,8 +59,8 @@ public class PluginTemplate extends JavaPlugin {
                 me.sendMessage(message);
                 return true;
             }
-            if (label.equalsIgnoreCase("hawkeye")) {//check command label
-                if (args[0].equalsIgnoreCase(ARROW_TYPE_TNT)) {//check if the second word is tnt
+            if (label.equalsIgnoreCase("hawkeye")) {
+                if (args[0].equalsIgnoreCase(ARROW_TYPE_TNT)) {
                     if (sender instanceof Player) {
                         Player me = (Player) sender;
                         PlayerInventory inventory = me.getInventory();
@@ -105,7 +105,7 @@ public class PluginTemplate extends JavaPlugin {
         return false;
     }
 
-    //@Override
+
     @EventHandler
     public boolean onShoot(ProjectileHitEvent e) {
         if (e.getEntity() instanceof Arrow) {
@@ -114,14 +114,9 @@ public class PluginTemplate extends JavaPlugin {
             Location loc=getLocation(e);
             Bukkit.getServer().broadcastMessage(loc.toString());
             if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
-                loc.getWorld().createExplosion(loc, 10, false, false, shooter);//location of explosion,size,setFire,DoBlockDamage,ExplosionOwner
+                loc.getWorld().createExplosion(loc, 10, false, false, shooter);
             }
-            //if(arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)){
-            // for(Entity ent: loc.getWorld().getNearbyEntities(loc,5,5,5)){
-            //if(ent instanceof LivingEntity){
-            // (Damageable)((LivingEntity) ent).damage(50, shooter);
-            //}
-            // }
+
             return true;
         }
         return false;
