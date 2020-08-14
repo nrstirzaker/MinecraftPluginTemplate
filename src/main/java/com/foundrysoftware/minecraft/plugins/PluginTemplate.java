@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -33,12 +35,14 @@ import java.util.HashMap;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class PluginTemplate extends JavaPlugin {
+public class PluginTemplate extends JavaPlugin implements Listener {
     private static final String ARROW_TYPE_TNT = "tnt";
     private final String PLUGIN_NAME = "PluginTemplate";
 
     public void onEnable() {
         getLogger().info("[" + PLUGIN_NAME + "] Started ");
+        PluginManager pluginmanager = Bukkit.getPluginManager();
+        pluginmanager.registerEvents(this,this);
     }
 
     public void onReload() {
@@ -58,8 +62,8 @@ public class PluginTemplate extends JavaPlugin {
                 String message = "Plugin Working";
                 me.sendMessage(message);
                 return true;
-            }
-            if (label.equalsIgnoreCase("hawkeye")) {
+            }String hawkeye = "hawkeye";
+            if (label.equalsIgnoreCase(hawkeye)) {
                 if (args[0].equalsIgnoreCase(ARROW_TYPE_TNT)) {
                     if (sender instanceof Player) {
                         Player me = (Player) sender;
