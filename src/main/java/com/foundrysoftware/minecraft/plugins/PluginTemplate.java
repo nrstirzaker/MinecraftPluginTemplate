@@ -132,7 +132,10 @@ public class PluginTemplate extends JavaPlugin {
     }
 
     private boolean areaDamage(Location loc, int area, int damage, Entity shooter) {
-        for (Entity entity : loc.getWorld().getNearbyEntities(loc, area, area, area)) {
+        int Yarea = area;
+        int Zarea =area;
+        int Xarea= area;
+        for (Entity entity : loc.getWorld().getNearbyEntities(loc, Xarea, Yarea, Zarea)) {
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).damage(damage, shooter);
 
