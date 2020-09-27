@@ -71,14 +71,7 @@ public class PluginTemplate extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        String simple="simple";
-        if (label.equalsIgnoreCase(simple)) {
-            if (sender instanceof Player) {
-                Player me = (Player) sender;
-                String message = "Plugin Working";
-                me.sendMessage(message);
-                return true;
-            }String hawkeye = "hawkeye";
+        String hawkeye = "hawkeye";
             if (label.equalsIgnoreCase(hawkeye)) {
                 if (args[0].equalsIgnoreCase(ARROW_TYPE_TNT)) {
                    arrow(sender,"CONDUIT_POWER");
@@ -88,7 +81,7 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                     return true;
                 }
             }
-        }
+
         return false;
     }
 
