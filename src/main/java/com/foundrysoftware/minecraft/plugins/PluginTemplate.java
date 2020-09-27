@@ -65,44 +65,11 @@ public class PluginTemplate extends JavaPlugin implements Listener {
             }String hawkeye = "hawkeye";
             if (label.equalsIgnoreCase(hawkeye)) {
                 if (args[0].equalsIgnoreCase(ARROW_TYPE_TNT)) {
-                    if (sender instanceof Player) {
-                        Player me = (Player) sender;
-                        PlayerInventory inventory = me.getInventory();
-                        for (int i = 0; i < inventory.getSize(); i++) {
-                            ItemStack item = inventory.getItem(i);
-                            if (item == null) {
-                                continue;
-                            }
-                            if (isArrow(item) == true) {
-                                item.setType(Material.TIPPED_ARROW);
-                                item.setAmount(item.getAmount());
-
-                                String potion = "CONDUIT_POWER";
-
-                                item.setItemMeta(createPotion(item,potion));
-                            }
-                        }
-
-                    }
+                   arrow(sender,"CONDUIT_POWER");
+                   return true;
                 } else {
-                    if (sender instanceof Player) {
-                        Player me = (Player) sender;
-                        PlayerInventory inventory = me.getInventory();
-                        for (int i = 0; i < inventory.getSize(); i++) {
-                            ItemStack item = inventory.getItem(i);
-                            if (item == null) {
-                                continue;
-                            }
-                            if (isArrow(item) == true) {
-                                String potion = args[0];
-                                item.setType(Material.TIPPED_ARROW);
-                                item.setAmount(item.getAmount());
-
-                                item.setItemMeta(createPotion(item,potion));
-                            }
-
-                        }
-                    }
+                    arrow(sender,args[0]);
+                    return true;
                 }
             }
         }
@@ -169,6 +136,26 @@ public class PluginTemplate extends JavaPlugin implements Listener {
         boolean visible = true;
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
         return(potionMeta);
+
+    }
+    private void arrow(CommandSender sender, String potion) {
+        Player me = (Player) sender;
+        PlayerInventory inventory = me.getInventory();
+        ItemStack item = null;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            item = inventory.getItem(i);
+            if (item == null) {
+                continue;
+            }
+            if (isArrow(item) == true) {
+
+                item.setType(Material.TIPPED_ARROW);
+                item.setAmount(item.getAmount());
+
+                item.setItemMeta(createPotion(item, potion));
+            }
+
+        }
 
     }
 }
