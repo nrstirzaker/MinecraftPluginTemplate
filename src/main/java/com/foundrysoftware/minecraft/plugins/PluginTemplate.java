@@ -106,19 +106,16 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     }
 
     private boolean isArrow(ItemStack item) {
-        if (item.getType() == Material.TIPPED_ARROW || item.getType() == Material.ARROW || item.getType() == Material.SPECTRAL_ARROW) {
-            return true;
-        } else {
-            return false;
-        }
+        return (item.getType() == Material.TIPPED_ARROW || item.getType() == Material.ARROW || item.getType() == Material.SPECTRAL_ARROW);
+
 
     }
 
     private boolean areaDamage(Location loc, int area, int damage, Entity shooter) {
-        int Yarea = area;
-        int Zarea =area;
-        int Xarea= area;
-        for (Entity entity : loc.getWorld().getNearbyEntities(loc, Xarea, Yarea, Zarea)) {
+        int yDistance = area;
+        int zDistance =area;
+        int xDistance= area;
+        for (Entity entity : loc.getWorld().getNearbyEntities(loc, xDistance, yDistance, zDistance)) {
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).damage(damage, shooter);
 
