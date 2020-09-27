@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,11 +39,26 @@ import java.util.logging.Logger;
 public class PluginTemplate extends JavaPlugin implements Listener {
     private static final String ARROW_TYPE_TNT = "tnt";
     private final String PLUGIN_NAME = "PluginTemplate";
-
+    public static boolean destroysBlocks = false;
+    public static boolean setFire = false;
+@Override
     public void onEnable() {
         getLogger().info("[" + PLUGIN_NAME + "] Started ");
         PluginManager pluginmanager = Bukkit.getPluginManager();
         pluginmanager.registerEvents(this,this);
+        FileConfiguration config = getConfig();
+        if(getConfig()==null){
+
+           config.createSection("destroysBlocks");
+           config.addDefault("destroysBlocks",false);
+           config.createSection("setFire");
+           config.addDefault("setFire",false);
+           saveDefaultConfig();
+
+        }
+        destroysBlocks=config.getBoolean("destroysBlocks");
+        setFire = config.getBoolean("setFire");
+
     }
 
     public void onReload() {
@@ -85,7 +101,10 @@ public class PluginTemplate extends JavaPlugin implements Listener {
             Location loc=getLocation(e);
             Bukkit.getServer().broadcastMessage(loc.toString());
             if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
-                loc.getWorld().createExplosion(loc, 10, false, false, shooter);
+                int size = 10;
+
+
+                loc.getWorld().createExplosion(loc, size, setFire, destroysBlocks, shooter);
             }
 
             return true;
