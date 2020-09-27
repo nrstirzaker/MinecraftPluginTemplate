@@ -140,9 +140,9 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     private PotionMeta createPotion(ItemStack item, String potion){
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
         potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
-        int duration = 10;
-        int amplifier = 2;
-        boolean visible = true;
+        final int duration = 10;
+        final int amplifier = 2;
+        final boolean visible = true;
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
         return(potionMeta);
 
