@@ -7,7 +7,7 @@ version '1.0-SNAPSHOT'
 
 
 
-def SERVER_LOC = 'C:\\Tools\\MCPythonTools\\server'
+def SERVER_LOC = 'C:\\Users\\euanv\\Documents\\Minecraft Python\\Minecraft Tools\\server'
 def SERVER_PLUGIN_LOC = SERVER_LOC + '\\plugins'
 def FULL_JAR_NAME = rootProject.name + "-" + version+".jar"
 
@@ -40,7 +40,7 @@ task runServer(type:Exec){
     doFirst {
         println "Starting server..."
         workingDir = file(SERVER_LOC)
-        commandLine = ['cmd', '/C', 'start', 'start-1-16-1.bat']
+        commandLine = ['cmd', '/C', 'start', 'start-1-15-2.bat']
 
     }
 }
