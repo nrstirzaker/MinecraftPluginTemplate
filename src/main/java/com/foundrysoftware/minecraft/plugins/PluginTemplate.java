@@ -1,5 +1,6 @@
 package com.foundrysoftware.minecraft.plugins;
 
+import net.minecraft.server.v1_15_R1.ChatHoverable;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -74,6 +75,9 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         String hawkeye = "hawkeye";
             if (label.equalsIgnoreCase(hawkeye)) {
+                if(args[0] == null){
+                    sender.sendMessage("please input an argument");
+                }
                 if (args[0].contains("TNT")) {
                    arrow(sender,"CONDUIT_POWER");
                    return true;
@@ -96,7 +100,7 @@ public class PluginTemplate extends JavaPlugin implements Listener {
             Arrow arrow = (Arrow) e.getEntity();
             Entity shooter = (Entity) arrow.getShooter();
             Location loc=getLocation(e);
-            Bukkit.getServer().broadcastMessage(loc.toString());
+
             if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
                 int size = 10;
                 loc.getWorld().createExplosion(loc, size, setFire, destroysBlocks, shooter);
@@ -146,10 +150,12 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     private PotionMeta createPotion(ItemStack item, String potion){
 
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-        potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion)),false,false));
+        potionMeta.clearCustomEffects();
+        potionMeta.setBasePotionData(new PotionData(PotionType.AWKWARD,false,false));
         final int duration = 10;
         final int amplifier = 2;
         final boolean visible = true;
+
 
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
         return(potionMeta);
@@ -169,11 +175,13 @@ public class PluginTemplate extends JavaPlugin implements Listener {
 
                     item.setType(Material.TIPPED_ARROW);
                     item.setAmount(item.getAmount());
+
                     try {
 
                         item.setItemMeta(createPotion(item, potion));
                     }catch(IllegalArgumentException error) {
                         me.sendMessage(ChatColor.RED + "I do say sir/madam i have no idea what potion your talking about");
+                        me.sendMessage(error.toString());
 
                     }
 
