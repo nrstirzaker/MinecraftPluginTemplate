@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
+
 import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
 import org.bukkit.potion.PotionType;
 
@@ -40,24 +41,25 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     public static boolean destroysBlocks = false;
     public static boolean setFire = false;
     public static int size = 10;
-@Override
+
+    @Override
     public void onEnable() {
         getLogger().info("[" + PLUGIN_NAME + "] Started ");
         PluginManager pluginmanager = Bukkit.getPluginManager();
-        pluginmanager.registerEvents(this,this);
+        pluginmanager.registerEvents(this, this);
         FileConfiguration config = getConfig();
-        if(getConfig()==null){
+        if (getConfig() == null) {
 
-           config.createSection("destroysBlocks");
-           config.addDefault("destroysBlocks",false);
-           config.createSection("setFire");
-           config.addDefault("setFire",false);
+            config.createSection("destroysBlocks");
+            config.addDefault("destroysBlocks", false);
+            config.createSection("setFire");
+            config.addDefault("setFire", false);
             config.createSection("size");
-            config.addDefault("size",10);
-           saveDefaultConfig();
+            config.addDefault("size", 10);
+            saveDefaultConfig();
 
         }
-        destroysBlocks=config.getBoolean("destroysBlocks");
+        destroysBlocks = config.getBoolean("destroysBlocks");
         setFire = config.getBoolean("setFire");
         size = config.getInt("size");
 
@@ -74,21 +76,21 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         String hawkeye = "hawkeye";
-            if (label.equalsIgnoreCase(hawkeye)) {
-                if(args[0] == null){
-                    sender.sendMessage("please input an argument");
-                }
-                if (args[0].contains("TNT")) {
-                   arrow(sender,"CONDUIT_POWER");
-                   return true;
-                } else {
-                    if(args[0].contains("TELEPORT")){
-                        arrow(sender, "DOLPHINS_GRACE");
-                    }
-                    arrow(sender,args[0]);
-                    return true;
-                }
+        if (label.equalsIgnoreCase(hawkeye)) {
+            if (args[0] == null) {
+                sender.sendMessage("please input an argument");
             }
+            if (args[0].contains("TNT")) {
+                arrow(sender, "CONDUIT_POWER");
+                return true;
+            } else {
+                if (args[0].contains("TELEPORT")) {
+                    arrow(sender, "DOLPHINS_GRACE");
+                }
+                arrow(sender, args[0]);
+                return true;
+            }
+        }
 
         return false;
     }
@@ -99,13 +101,13 @@ public class PluginTemplate extends JavaPlugin implements Listener {
         if (e.getEntity() instanceof Arrow) {
             Arrow arrow = (Arrow) e.getEntity();
             Entity shooter = (Entity) arrow.getShooter();
-            Location loc=getLocation(e);
+            Location loc = getLocation(e);
 
             if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
                 int size = 10;
                 loc.getWorld().createExplosion(loc, size, setFire, destroysBlocks, shooter);
-            }else{
-                if(arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)){
+            } else {
+                if (arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)) {
                     ((Entity) arrow.getShooter()).teleport(loc);
                 }
             }
@@ -123,7 +125,7 @@ public class PluginTemplate extends JavaPlugin implements Listener {
 
     private boolean areaDamage(Location loc, int area, int damage, Entity shooter) {
         int yDistance = area;
-        int zDistance =area;
+        int zDistance = area;
         int xDistance = area;
         for (Entity entity : loc.getWorld().getNearbyEntities(loc, xDistance, yDistance, zDistance)) {
             if (entity instanceof LivingEntity) {
@@ -147,49 +149,51 @@ public class PluginTemplate extends JavaPlugin implements Listener {
         }
         return loc;
     }
-    private PotionMeta createPotion(ItemStack item, String potion){
+
+    private PotionMeta createPotion(ItemStack item, String potion) {
 
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
         potionMeta.clearCustomEffects();
-        potionMeta.setBasePotionData(new PotionData(PotionType.AWKWARD,false,false));
+        potionMeta.setBasePotionData(new PotionData(PotionType.AWKWARD, false, false));
         final int duration = 10;
         final int amplifier = 2;
         final boolean visible = true;
 
 
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
-        return(potionMeta);
+        return (potionMeta);
 
     }
+
     private void arrow(CommandSender sender, String potion) {
 
-            Player me = (Player) sender;
-            PlayerInventory inventory = me.getInventory();
-            ItemStack item = null;
-            for (int i = 0; i < inventory.getSize(); i++) {
-                item = inventory.getItem(i);
-                if (item == null) {
-                    continue;
-                }
-                if (isArrow(item) == true) {
+        Player me = (Player) sender;
+        PlayerInventory inventory = me.getInventory();
+        ItemStack item = null;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            item = inventory.getItem(i);
+            if (item == null) {
+                continue;
+            }
+            if (isArrow(item) == true) {
 
-                    item.setType(Material.TIPPED_ARROW);
-                    item.setAmount(item.getAmount());
+                item.setType(Material.TIPPED_ARROW);
+                item.setAmount(item.getAmount());
 
-                    try {
+                try {
 
-                        item.setItemMeta(createPotion(item, potion));
-                    }catch(IllegalArgumentException error) {
-                        me.sendMessage(ChatColor.RED + "I do say sir/madam i have no idea what potion your talking about");
-                        me.sendMessage(error.toString());
-
-                    }
+                    item.setItemMeta(createPotion(item, potion));
+                } catch (IllegalArgumentException error) {
+                    me.sendMessage(ChatColor.RED + "I do say sir/madam i have no idea what potion your talking about");
+                    me.sendMessage(error.toString());
 
                 }
 
             }
 
         }
+
+    }
 
 }
 
