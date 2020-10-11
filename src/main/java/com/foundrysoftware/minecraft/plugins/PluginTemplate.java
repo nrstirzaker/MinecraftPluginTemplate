@@ -78,6 +78,9 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                    arrow(sender,"CONDUIT_POWER");
                    return true;
                 } else {
+                    if(args[0].contains("TELEPORT")){
+                        arrow(sender, "DOLPHINS_GRACE");
+                    }
                     arrow(sender,args[0]);
                     return true;
                 }
@@ -97,6 +100,10 @@ public class PluginTemplate extends JavaPlugin implements Listener {
             if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
                 int size = 10;
                 loc.getWorld().createExplosion(loc, size, setFire, destroysBlocks, shooter);
+            }else{
+                if(arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)){
+                    ((Entity) arrow.getShooter()).teleport(loc);
+                }
             }
 
             return true;
