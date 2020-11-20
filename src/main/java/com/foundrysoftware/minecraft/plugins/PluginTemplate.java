@@ -1,6 +1,6 @@
 package com.foundrysoftware.minecraft.plugins;
 
-import net.minecraft.server.v1_15_R1.ChatHoverable;
+import net.minecraft.server.v1_16_R2.ChatHoverable;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,7 +28,7 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
+
 import org.bukkit.potion.PotionType;
 
 import java.util.HashMap;
@@ -84,9 +84,14 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                 arrow(sender, "CONDUIT_POWER");
                 return true;
             } else {
-                if (args[0].contains("TELEPORT")) {
-                    arrow(sender, "DOLPHINS_GRACE");
-                }
+                    if (args[0].contains("TELEPORT")) {
+                        arrow(sender, "DOLPHINS_GRACE");
+                    }else{
+                        if(args[0].contains("LIGHTING")) {
+                            arrow(sender, "WATER_BREATHING");
+
+                        }
+                    }
                 arrow(sender, args[0]);
                 return true;
             }
@@ -109,6 +114,10 @@ public class PluginTemplate extends JavaPlugin implements Listener {
             } else {
                 if (arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)) {
                     ((Entity) arrow.getShooter()).teleport(loc);
+                }else{
+                    if(arrow.hasCustomEffect(PotionEffectType.WATER_BREATHING)){
+                        loc.getWorld().spawn(loc, LightningStrike.class);
+                    }
                 }
             }
 
