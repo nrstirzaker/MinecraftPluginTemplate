@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 
 import org.bukkit.potion.PotionType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -128,16 +129,7 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                         if(arrow.hasCustomEffect(PotionEffectType.FAST_DIGGING)){
                             Block b = loc.getBlock();
                             Vector dir = shooter.getLocation().getDirection();
-                            loc.getBlock().setType(Material.BRICK_WALL);
-                            loc.setY(loc.getY()+1);
-                            Block bb = loc.getBlock();
-                            loc.getBlock().setType(Material.BRICK_WALL);
-                            Location loc2 = loc;
-                            loc2.setDirection(dir);
-                            loc2.getDirection().rotateAroundY(90);
-                            loc2.add(loc2);
-                            Block bbb = loc.getBlock();
-                            loc2.getBlock().setType(Material.BRICK_WALL);
+
                         }
                     }
                 }
@@ -224,6 +216,16 @@ public class PluginTemplate extends JavaPlugin implements Listener {
 
         }
 
+    }
+    private void block(Location loc, Material block){
+        Block bb = loc.getBlock();
+        loc.getBlock().setType(block);
+        new BukkitRunnable(){
+            public void run(){
+                loc.getBlock().setType(bb.getType());
+
+            }
+        }.runTaskLater(this,100);
     }
 
 }
