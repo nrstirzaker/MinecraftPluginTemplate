@@ -2,6 +2,7 @@ package com.foundrysoftware.minecraft.plugins;
 
 import net.minecraft.server.v1_16_R2.ChatHoverable;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +31,7 @@ import java.util.logging.Logger;
 
 
 import org.bukkit.potion.PotionType;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.*;
@@ -90,6 +92,11 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                         if(args[0].contains("LIGHTING")) {
                             arrow(sender, "WATER_BREATHING");
 
+                        }else{
+                            if(args[0].contains("WALL")) {
+                                arrow(sender, "FAST_DIGGING");
+
+                            }
                         }
                     }
                 arrow(sender, args[0]);
@@ -117,6 +124,21 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                 }else{
                     if(arrow.hasCustomEffect(PotionEffectType.WATER_BREATHING)){
                         loc.getWorld().spawn(loc, LightningStrike.class);
+                    }else{
+                        if(arrow.hasCustomEffect(PotionEffectType.FAST_DIGGING)){
+                            Block b = loc.getBlock();
+                            Vector dir = shooter.getLocation().getDirection();
+                            loc.getBlock().setType(Material.BRICK_WALL);
+                            loc.setY(loc.getY()+1);
+                            Block bb = loc.getBlock();
+                            loc.getBlock().setType(Material.BRICK_WALL);
+                            Location loc2 = loc;
+                            loc2.setDirection(dir);
+                            loc2.getDirection().rotateAroundY(90);
+                            loc2.add(loc2);
+                            Block bbb = loc.getBlock();
+                            loc2.getBlock().setType(Material.BRICK_WALL);
+                        }
                     }
                 }
             }
