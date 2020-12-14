@@ -89,13 +89,16 @@ public class PluginTemplate extends JavaPlugin implements Listener {
             } else {
                     if (args[0].contains("TELEPORT")) {
                         arrow(sender, "DOLPHINS_GRACE");
+                        return true;
                     }else{
-                        if(args[0].contains("LIGHTING")) {
+                        if(args[0].contains("LIGHTNING")) {
                             arrow(sender, "WATER_BREATHING");
+                            return true;
 
                         }else{
                             if(args[0].contains("WALL")) {
                                 arrow(sender, "FAST_DIGGING");
+                                return true;
 
                             }
                         }
@@ -129,6 +132,21 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                         if(arrow.hasCustomEffect(PotionEffectType.FAST_DIGGING)){
                             Block b = loc.getBlock();
                             Vector dir = shooter.getLocation().getDirection();
+                            loc.setY(loc.getY()+1);
+                            block(loc,Material.BRICKS);
+                            loc.setY(loc.getY()+1);
+                            block(loc,Material.BRICKS);
+                            loc.setY(loc.getY()-1);
+                            loc.setDirection(dir);
+                            loc.getDirection().rotateAroundY(90);
+                            loc.setY(loc.getY()+1);
+                            loc.add(loc.getDirection());
+                            block(loc,Material.BRICKS);
+
+                            loc.setY(loc.getY()+1);
+                            block(loc,Material.BRICKS);
+
+
 
                         }
                     }
@@ -219,14 +237,18 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     }
     private void block(Location loc, Material block){
         Block bb = loc.getBlock();
+        Material bbb = bb.getType();
+        if(bbb!=block)
         loc.getBlock().setType(block);
         new BukkitRunnable(){
+            @Override
             public void run(){
-                loc.getBlock().setType(bb.getType());
+                loc.getBlock().setType(bbb);
 
             }
         }.runTaskLater(this,100);
     }
 
 }
+
 

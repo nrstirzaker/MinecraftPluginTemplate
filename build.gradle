@@ -7,7 +7,7 @@ version '1.0-SNAPSHOT'
 
 
 
-def SERVER_LOC = 'C:\\Users\\euanv\\Documents\\Minecraft Python\\Minecraft Tools\\server'
+def SERVER_LOC = 'C:\\Users\\euanv\\OneDrive\\Documents\\New folder'
 def SERVER_PLUGIN_LOC = SERVER_LOC + '\\plugins'
 def FULL_JAR_NAME = rootProject.name + "-" + version+".jar"
 
