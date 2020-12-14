@@ -127,7 +127,7 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                     ((Entity) arrow.getShooter()).teleport(loc);
                 }else{
                     if(arrow.hasCustomEffect(PotionEffectType.WATER_BREATHING)){
-                        loc.getWorld().spawn(loc, LightningStrike.class);
+                        loc.getWorld().strikeLightning(loc);
                     }else{
                         if(arrow.hasCustomEffect(PotionEffectType.FAST_DIGGING)){
                             Block b = loc.getBlock();
@@ -195,6 +195,7 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     private PotionMeta createPotion(ItemStack item, String potion) {
 
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+        if(potionMeta.hasCustomEffects()==true)
         potionMeta.clearCustomEffects();
         potionMeta.setBasePotionData(new PotionData(PotionType.AWKWARD, false, false));
         final int duration = 10;
