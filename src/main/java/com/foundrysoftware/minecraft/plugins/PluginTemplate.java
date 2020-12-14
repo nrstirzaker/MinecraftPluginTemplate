@@ -138,8 +138,9 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                             block(loc,Material.BRICKS);
                             loc.setY(loc.getY()-1);
                             loc.setDirection(dir);
-                            loc.getDirection().rotateAroundY(90);
-                            loc.setY(loc.getY()+1);
+                            loc.setYaw(loc.getYaw()+90);
+                            loc.setPitch(0);
+                            //loc.setY(loc.getY()+1);
                             loc.add(loc.getDirection());
                             block(loc,Material.BRICKS);
 
