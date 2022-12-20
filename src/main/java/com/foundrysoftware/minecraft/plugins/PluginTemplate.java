@@ -1,9 +1,8 @@
 package com.foundrysoftware.minecraft.plugins;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import net.minecraft.server.v1_16_R2.ChatHoverable;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,8 +28,11 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
+
+
 import org.bukkit.potion.PotionType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.*;
@@ -41,23 +43,28 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     private final String PLUGIN_NAME = "PluginTemplate";
     public static boolean destroysBlocks = false;
     public static boolean setFire = false;
-@Override
+    public static int size = 10;
+
+    @Override
     public void onEnable() {
         getLogger().info("[" + PLUGIN_NAME + "] Started ");
         PluginManager pluginmanager = Bukkit.getPluginManager();
-        pluginmanager.registerEvents(this,this);
+        pluginmanager.registerEvents(this, this);
         FileConfiguration config = getConfig();
-        if(getConfig()==null){
+        if (getConfig() == null) {
 
-           config.createSection("destroysBlocks");
-           config.addDefault("destroysBlocks",false);
-           config.createSection("setFire");
-           config.addDefault("setFire",false);
-           saveDefaultConfig();
+            config.createSection("destroysBlocks");
+            config.addDefault("destroysBlocks", false);
+            config.createSection("setFire");
+            config.addDefault("setFire", false);
+            config.createSection("size");
+            config.addDefault("size", 10);
+            saveDefaultConfig();
 
         }
-        destroysBlocks=config.getBoolean("destroysBlocks");
+        destroysBlocks = config.getBoolean("destroysBlocks");
         setFire = config.getBoolean("setFire");
+        size = config.getInt("size");
 
     }
 
@@ -72,15 +79,34 @@ public class PluginTemplate extends JavaPlugin implements Listener {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         String hawkeye = "hawkeye";
-            if (label.equalsIgnoreCase(hawkeye)) {
-                if (args[0].equalsIgnoreCase(ARROW_TYPE_TNT)) {
-                   arrow(sender,"CONDUIT_POWER");
-                   return true;
-                } else {
-                    arrow(sender,args[0]);
-                    return true;
-                }
+        if (label.equalsIgnoreCase(hawkeye)) {
+            if (args[0] == null) {
+                sender.sendMessage("please input an argument");
             }
+            if (args[0].contains("TNT")) {
+                arrow(sender, "CONDUIT_POWER");
+                return true;
+            } else {
+                    if (args[0].contains("TELEPORT")) {
+                        arrow(sender, "DOLPHINS_GRACE");
+                        return true;
+                    }else{
+                        if(args[0].contains("LIGHTNING")) {
+                            arrow(sender, "WATER_BREATHING");
+                            return true;
+
+                        }else{
+                            if(args[0].contains("WALL")) {
+                                arrow(sender, "FAST_DIGGING");
+                                return true;
+
+                            }
+                        }
+                    }
+                arrow(sender, args[0]);
+                return true;
+            }
+        }
 
         return false;
     }
@@ -91,13 +117,41 @@ public class PluginTemplate extends JavaPlugin implements Listener {
         if (e.getEntity() instanceof Arrow) {
             Arrow arrow = (Arrow) e.getEntity();
             Entity shooter = (Entity) arrow.getShooter();
-            Location loc=getLocation(e);
-            Bukkit.getServer().broadcastMessage(loc.toString());
+            Location loc = getLocation(e);
+
             if (arrow.hasCustomEffect(PotionEffectType.CONDUIT_POWER)) {
                 int size = 10;
-
-
                 loc.getWorld().createExplosion(loc, size, setFire, destroysBlocks, shooter);
+            } else {
+                if (arrow.hasCustomEffect(PotionEffectType.DOLPHINS_GRACE)) {
+                    ((Entity) arrow.getShooter()).teleport(loc);
+                }else{
+                    if(arrow.hasCustomEffect(PotionEffectType.WATER_BREATHING)){
+                        loc.getWorld().strikeLightning(loc);
+                    }else{
+                        if(arrow.hasCustomEffect(PotionEffectType.FAST_DIGGING)){
+                            Block b = loc.getBlock();
+                            Vector dir = shooter.getLocation().getDirection();
+                            loc.setY(loc.getY()+1);
+                            block(loc,Material.BRICKS);
+                            loc.setY(loc.getY()+1);
+                            block(loc,Material.BRICKS);
+                            loc.setY(loc.getY()-1);
+                            loc.setDirection(dir);
+                            loc.setYaw(loc.getYaw()+90);
+                            loc.setPitch(0);
+                            //loc.setY(loc.getY()+1);
+                            loc.add(loc.getDirection());
+                            block(loc,Material.BRICKS);
+
+                            loc.setY(loc.getY()+1);
+                            block(loc,Material.BRICKS);
+
+
+
+                        }
+                    }
+                }
             }
 
             return true;
@@ -113,8 +167,8 @@ public class PluginTemplate extends JavaPlugin implements Listener {
 
     private boolean areaDamage(Location loc, int area, int damage, Entity shooter) {
         int yDistance = area;
-        int zDistance =area;
-        int xDistance= area;
+        int zDistance = area;
+        int xDistance = area;
         for (Entity entity : loc.getWorld().getNearbyEntities(loc, xDistance, yDistance, zDistance)) {
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).damage(damage, shooter);
@@ -137,17 +191,25 @@ public class PluginTemplate extends JavaPlugin implements Listener {
         }
         return loc;
     }
-    private PotionMeta createPotion(ItemStack item, String potion){
+
+    private PotionMeta createPotion(ItemStack item, String potion) {
+
         PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-        potionMeta.setBasePotionData(new PotionData(PotionType.getByEffect(PotionEffectType.getByName(potion))));
+        if(potionMeta.hasCustomEffects()==true)
+        potionMeta.clearCustomEffects();
+        potionMeta.setBasePotionData(new PotionData(PotionType.AWKWARD, false, false));
         final int duration = 10;
         final int amplifier = 2;
         final boolean visible = true;
+
+
         potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(potion), duration, amplifier), visible);
-        return(potionMeta);
+        return (potionMeta);
 
     }
+
     private void arrow(CommandSender sender, String potion) {
+
         Player me = (Player) sender;
         PlayerInventory inventory = me.getInventory();
         ItemStack item = null;
@@ -161,11 +223,34 @@ public class PluginTemplate extends JavaPlugin implements Listener {
                 item.setType(Material.TIPPED_ARROW);
                 item.setAmount(item.getAmount());
 
-                item.setItemMeta(createPotion(item, potion));
+                try {
+
+                    item.setItemMeta(createPotion(item, potion));
+                } catch (IllegalArgumentException error) {
+                    me.sendMessage(ChatColor.RED + "I do say sir/madam i have no idea what potion your talking about");
+                    me.sendMessage(error.toString());
+
+                }
+
             }
 
         }
 
     }
+    private void block(Location loc, Material block){
+        Block bb = loc.getBlock();
+        Material bbb = bb.getType();
+        if(bbb!=block)
+        loc.getBlock().setType(block);
+        new BukkitRunnable(){
+            @Override
+            public void run(){
+                loc.getBlock().setType(bbb);
+
+            }
+        }.runTaskLater(this,100);
+    }
+
 }
+
 
